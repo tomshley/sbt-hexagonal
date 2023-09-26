@@ -15,7 +15,7 @@ lazy val hexagonalPlugins = (project in file("."))
     structuredPluginProject
   )
 def hexagonalPluginsProject(projectShortName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
-  val hexagonalProjectName = "hexagonal-plugins-" + projectShortName
+  val hexagonalProjectName = "hexagonal-plugin-" + projectShortName
   Project(id = hexagonalProjectName, base = file(hexagonalProjectName))
     .settings(
       organization := "com.tomshley.brands.global.tech.tware.products.hexagonal.plugins",
@@ -24,7 +24,7 @@ def hexagonalPluginsProject(projectShortName: String, additionalSettings: sbt.De
         val tagOrBranch =
           if (version.value.endsWith("SNAPSHOT")) "main"
           else "v" + version.value
-        Seq(("APACHE-2.0", url("https://raw.githubusercontent.com/tomshley/hexagonal-plugin-sbt/" + tagOrBranch + "/LICENSE")))
+        Seq(("APACHE-2.0", url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE")))
       },
       scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s",
       Test / parallelExecution := false
