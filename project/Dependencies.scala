@@ -13,6 +13,11 @@ object Dependencies {
 
     )
   )
+  val cicdPluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+
+    )
+  )
   val layeredPluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
 
