@@ -17,12 +17,12 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
-package projectstructure
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt
 
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettings
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import sbt.*
 
-protected[projectstructure] trait ProjectStructureKeys extends BasicSbtSettings{
-  lazy val enforceProjectStructure: TaskKey[Unit] = taskKey[Unit]("Generates hexagonal project structure")
+
+protected[plugins] trait BasicSbtSettings {
+  lazy val hexagonalPart = settingKey[HexagonalPart]("the hexagonal architecture part")
 }
