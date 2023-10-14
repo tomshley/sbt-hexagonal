@@ -8,7 +8,17 @@ object Dependencies {
   val Scala2Versions: Seq[String] = Seq(Scala213, Scala212)
   val ScalaVersions: Seq[String] = Dependencies.Scala2Versions :+ Dependencies.Scala3
 
+  val commonProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+
+    )
+  )
   val acceptancePluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+
+    )
+  )
+  val cicdPluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
 
     )
