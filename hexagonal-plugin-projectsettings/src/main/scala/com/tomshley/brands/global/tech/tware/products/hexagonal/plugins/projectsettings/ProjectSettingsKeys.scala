@@ -19,8 +19,9 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.keys.BasicHexagonalSettings
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettings
 import sbt.*
 
-protected[projectsettings] trait ProejctSettingsKeys extends BasicSbtSettings {
+protected[projectsettings] trait ProjectSettingsKeys extends BasicSbtSettings {
+  lazy val applyProjectSettings: TaskKey[Unit] = taskKey[Unit]("Generates hexagonal project structure")
 }

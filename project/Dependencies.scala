@@ -38,6 +38,11 @@ object Dependencies {
 
     )
   )
+  val settingsPluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+
+    )
+  )
   val structuredPluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
 
