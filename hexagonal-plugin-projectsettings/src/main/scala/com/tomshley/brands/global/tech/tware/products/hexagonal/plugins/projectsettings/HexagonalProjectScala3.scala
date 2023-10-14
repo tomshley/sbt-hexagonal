@@ -25,6 +25,6 @@ import sbt.Keys.crossScalaVersions
 
 object HexagonalProjectScala3 {
 
-  val settings: Seq[Def.Setting[Seq[String]]] = Seq(crossScalaVersions := Dependencies.ScalaVersions)
+  val settings: Seq[Def.Setting[Seq[String]]] = Seq(crossScalaVersions := HexagonalProjectDependencies.ScalaVersions)
 
 }
