@@ -20,21 +20,17 @@ package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
 
 import sbt.Keys.{baseDirectory, name, organization, sLog}
-import sbt.{Def, *}
+import sbt.{*, Def}
 
 object ProjectSettingsPlugin extends AutoPlugin {
-
-  override val trigger: PluginTrigger = noTrigger
-
-  override val requires: Plugins = plugins.JvmPlugin
-
-  object autoImport extends ProjectStructureKeys
-
-  import autoImport.*
 
   override lazy val projectSettings: Seq[Setting[?]] = Seq(
     enforceProjectstructure := enforceProjectstructureTask.value
   )
+  override val trigger: PluginTrigger = noTrigger
+  override val requires: Plugins = plugins.JvmPlugin
+
+  import autoImport.*
 
   private def enforceProjectstructureTask: Def.Initialize[Task[Unit]] = Def.task {
     val log = sLog.value
@@ -42,4 +38,6 @@ object ProjectSettingsPlugin extends AutoPlugin {
     log.info("Applying project settings for a hexagonal project...")
     log.info(Seq("Hexagonal Part", hexagonalPart.value).mkString(":"))
   }
+
+  object autoImport extends ProjectStructureKeys
 }

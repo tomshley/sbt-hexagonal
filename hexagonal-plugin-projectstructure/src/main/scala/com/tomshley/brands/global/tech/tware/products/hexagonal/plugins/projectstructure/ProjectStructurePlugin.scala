@@ -33,10 +33,10 @@ object ProjectStructurePlugin extends AutoPlugin {
   import autoImport.*
 
   override lazy val projectSettings: Seq[Setting[?]] = Seq(
-    enforceProjectstructure := enforceProjectstructureTask.value
+    enforceProjectStructure := enforceProjectStructureTask.value
   )
 
-  private def enforceProjectstructureTask: Def.Initialize[Task[Unit]] = Def.task {
+  private def enforceProjectStructureTask: Def.Initialize[Task[Unit]] = Def.task {
     val log = sLog.value
 
     log.info("Enforcing file structure for a hexagonal project...")
