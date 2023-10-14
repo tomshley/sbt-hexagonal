@@ -52,5 +52,5 @@ def hexagonalScriptedPluginProject(pluginProjectName: String, additionalSettings
 //      ),
       scriptedBufferLog := false
     )
-    .dependsOn(commonSbtProject)
+    .dependsOn(commonProject, commonSbtProject)
 }
