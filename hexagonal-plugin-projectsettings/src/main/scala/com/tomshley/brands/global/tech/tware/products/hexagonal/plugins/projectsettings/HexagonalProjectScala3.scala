@@ -17,10 +17,14 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
-package projectsettings
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.keys.BasicHexagonalSettings
-import sbt.*
+/*
+ * Borrowed from Alpakka
+ */
+import sbt.Def
+import sbt.Keys.crossScalaVersions
 
-protected[projectsettings] trait ProejctSettingsKeys extends BasicSbtSettings {
+object HexagonalProjectScala3 {
+
+  val settings: Seq[Def.Setting[Seq[String]]] = Seq(crossScalaVersions := Dependencies.ScalaVersions)
+
 }

@@ -19,8 +19,6 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.keys.BasicHexagonalSettings
-import sbt.*
 
-protected[projectsettings] trait ProejctSettingsKeys extends BasicSbtSettings {
-}
+import sbt.Def.SettingsDefinition
+case class HexagonalProject(projectName: String, additionalSettings: sbt.Def.SettingsDefinition*)
