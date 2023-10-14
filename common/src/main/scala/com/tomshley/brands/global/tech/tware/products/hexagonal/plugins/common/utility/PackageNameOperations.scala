@@ -1,4 +1,5 @@
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.utility
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
+package common.utility
 
 object PackageNameOperations {
   def appNameToPackageName(appName: String): String = {

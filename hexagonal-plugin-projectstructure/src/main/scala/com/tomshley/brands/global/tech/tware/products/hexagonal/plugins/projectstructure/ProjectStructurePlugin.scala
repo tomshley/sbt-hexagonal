@@ -16,7 +16,8 @@
  * @author Thomas Schena @sgoggles <https://github.com/sgoggles> | <https://gitlab.com/sgoggles>
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectstructure
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
+package projectstructure
 
 import sbt.Keys.{baseDirectory, name, organization, sLog}
 import sbt.{Def, *}

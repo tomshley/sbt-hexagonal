@@ -3,7 +3,8 @@
  * @author Thomas Schena @sgoggles <https://github.com/sgoggles>
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectstructure
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
+package projectstructure
 
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.utility.PackageNameOperations.{appNameToPackageName, packageNameToFilepath}
 import sbt.*

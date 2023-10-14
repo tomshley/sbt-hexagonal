@@ -1,4 +1,5 @@
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
+package common.model
 
 sealed trait HexagonalPart {}
 
