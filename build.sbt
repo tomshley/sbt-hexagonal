@@ -7,6 +7,7 @@ lazy val cicdPluginProject = hexagonalScriptedPluginProject("cicd", Dependencies
 lazy val layeredPluginProject = hexagonalScriptedPluginProject("layered", Dependencies.layeredPluginProject, Scala3.settings)
 lazy val libraryPluginProject = hexagonalScriptedPluginProject("library", Dependencies.libraryPluginProject, Scala3.settings)
 lazy val protobufsPluginProject = hexagonalScriptedPluginProject("protobufs", Dependencies.protobufsPluginProject, Scala3.settings)
+lazy val settingsPluginProject = hexagonalScriptedPluginProject("projectsettings", Dependencies.settingsPluginProject, Scala3.settings)
 lazy val structuredPluginProject = hexagonalScriptedPluginProject("projectstructure", Dependencies.structuredPluginProject, Scala3.settings)
 
 lazy val hexagonalPlugins = (project in file("."))
@@ -18,6 +19,7 @@ lazy val hexagonalPlugins = (project in file("."))
     layeredPluginProject,
     libraryPluginProject,
     protobufsPluginProject,
+    settingsPluginProject,
     structuredPluginProject
   )
 def hexagonalProject(projectName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
