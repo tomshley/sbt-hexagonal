@@ -17,9 +17,7 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
-package common
-package model
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model
 
 sealed trait HexagonalPart {}
 
@@ -29,6 +27,7 @@ sealed trait HexagonalInfra extends HexagonalPart {}
 
 sealed trait HexagonalLayer extends HexagonalPart {}
 
+case object Lib extends HexagonalOuter
 case object LoggingAdapter extends HexagonalOuter
 
 case object StreamingAdapter extends HexagonalInfra

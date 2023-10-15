@@ -19,12 +19,13 @@
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
 
-import sbt.Keys.{baseDirectory, name, organization, sLog}
+import sbt.Keys.*
 import sbt.{Def, *}
 
 /*
  * WARNING - TODO - Under Construction!
  */
+
 object ProjectSettingsPlugin extends AutoPlugin {
 
   override val trigger: PluginTrigger = noTrigger
@@ -32,20 +33,63 @@ object ProjectSettingsPlugin extends AutoPlugin {
   override val requires: Plugins = plugins.JvmPlugin
 
   object autoImport extends ProjectSettingsKeys
-
-  import autoImport.*
-
-  override lazy val projectSettings: Seq[Setting[?]] = Seq(
-    applyProjectSettings := applyProjectSettingsTask.value
+  private lazy val baseSettings3: sbt.Def.SettingsDefinition = Seq(
+    licenses := {
+      val tagOrBranch =
+        if (version.value.endsWith("SNAPSHOT")) "main"
+        else "v" + version.value
+      Seq(
+        ("APACHE-2.0",
+         url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE"))
+      )
+    },
+    scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s",
+    scalaVersion := ProjectSettingsDefs.Scala3,
   )
 
-  private def applyProjectSettingsTask: Def.Initialize[Task[Unit]] = Def.task {
-    val log = sLog.value
+  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ baseSettings3
 
-    log.info("Applying file structure for a hexagonal project...")
-    log.info(Seq("Hexagonal Part", hexagonalPart.value).mkString(":"))
-    log.warn(Seq("WARNING", "TODO","Under Construction!").mkString(" - "))
+  //  private lazy val hexagonalPartTaskValue = settingKey[HexagonalPart]("the hexagonal architecture part")
 
-    "Temp Return"
-  }
+//  private def hexagonalPartTask: Def.Initialize[HexagonalPart] = Def.setting {
+//    println("FOOOOO 2" + hexagonalPart.value.toString)
+//    println("FOOOOO 21" + Edge.toString)
+//    hexagonalPart.value
+//  }
+//      hexagonalPart.value match {
+//      case _: Edge.type => {
+//        println("EdgeEdge")
+//        Seq()
+//      }
+//      case _: ValueAdd.type => {
+//        println("ValueAddValueAdd")
+//        Seq()
+//      }
+//      case _: Core.type => {
+//        println("CoreCore")
+//        Seq()
+//      }
+//      case _: Lib.type => {
+//        println("LibLib")
+//        Seq()
+//      }
+//      case _ => {
+//        println("nothing")
+//        Seq()
+//      }
+//    }
+
+  //    type hexagonalPar[X] = X match
+//      case Edge => {
+//        baseSettings3 ++
+//        javaProject ++
+//        jsonProject ++
+//        akkaProject ++
+//        libProject ++
+//        scala3CrossVersions
+//      }
+//      case ValueAdd => {
+//
+//      }
+//    }
 }

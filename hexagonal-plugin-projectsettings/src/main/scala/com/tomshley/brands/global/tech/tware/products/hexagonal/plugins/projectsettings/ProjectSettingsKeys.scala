@@ -19,9 +19,25 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettings
 import sbt.*
 
 protected[projectsettings] trait ProjectSettingsKeys extends BasicSbtSettings {
-  lazy val applyProjectSettings: TaskKey[Unit] = taskKey[Unit]("Generates hexagonal project structure")
+
+  case class HexagonalProjectSettings[+T <: HexagonalPart](projectName: String, projectBaseOption: Option[File] = None) {
+    def project: Project = {
+      Project(
+        id = projectName,
+        base = projectBaseOption.fold(ifEmpty = file(projectName))(file => projectBaseOption.get)
+      ).settings(
+          ProjectSettingsDefs.javaProject,
+          ProjectSettingsDefs.jsonProject,
+          ProjectSettingsDefs.akkaProject,
+          ProjectSettingsDefs.libProject,
+          ProjectSettingsDefs.scala3CrossVersions
+        )
+
+    }
+  }
 }
