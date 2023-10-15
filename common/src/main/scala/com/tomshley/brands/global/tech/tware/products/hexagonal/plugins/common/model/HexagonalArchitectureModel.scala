@@ -18,7 +18,6 @@
  */
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model
-
 sealed trait HexagonalPart {}
 
 sealed trait HexagonalOuter extends HexagonalPart {}

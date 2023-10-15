@@ -48,48 +48,4 @@ object ProjectSettingsPlugin extends AutoPlugin {
   )
 
   override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ baseSettings3
-
-  //  private lazy val hexagonalPartTaskValue = settingKey[HexagonalPart]("the hexagonal architecture part")
-
-//  private def hexagonalPartTask: Def.Initialize[HexagonalPart] = Def.setting {
-//    println("FOOOOO 2" + hexagonalPart.value.toString)
-//    println("FOOOOO 21" + Edge.toString)
-//    hexagonalPart.value
-//  }
-//      hexagonalPart.value match {
-//      case _: Edge.type => {
-//        println("EdgeEdge")
-//        Seq()
-//      }
-//      case _: ValueAdd.type => {
-//        println("ValueAddValueAdd")
-//        Seq()
-//      }
-//      case _: Core.type => {
-//        println("CoreCore")
-//        Seq()
-//      }
-//      case _: Lib.type => {
-//        println("LibLib")
-//        Seq()
-//      }
-//      case _ => {
-//        println("nothing")
-//        Seq()
-//      }
-//    }
-
-  //    type hexagonalPar[X] = X match
-//      case Edge => {
-//        baseSettings3 ++
-//        javaProject ++
-//        jsonProject ++
-//        akkaProject ++
-//        libProject ++
-//        scala3CrossVersions
-//      }
-//      case ValueAdd => {
-//
-//      }
-//    }
 }
