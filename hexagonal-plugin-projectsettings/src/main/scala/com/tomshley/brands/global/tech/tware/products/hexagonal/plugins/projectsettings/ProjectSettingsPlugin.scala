@@ -31,14 +31,14 @@ sealed trait ProjectSettingsPlugin extends AutoPlugin {
 
   override val requires: Plugins = plugins.JvmPlugin
 
+  object autoImport extends ProjectSettingsKeys
+
+  import autoImport.*
+
   override def projectSettings: Seq[Def.Setting[?]] = {
     println("hit the base settings")
     super.projectSettings ++ baseSettings3
   }
-
-  import autoImport.*
-
-  object autoImport extends ProjectSettingsKeys
 }
 object ProjectHelperPlugin extends ProjectSettingsPlugin {}
 object HexagonalLibProjectPlugin extends ProjectSettingsPlugin {
