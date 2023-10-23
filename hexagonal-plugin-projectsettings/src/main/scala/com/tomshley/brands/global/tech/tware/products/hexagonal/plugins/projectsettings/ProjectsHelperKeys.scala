@@ -17,12 +17,20 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
 
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettingsKeys
 import sbt.*
+import sbt.Keys.{licenses, scalaVersion, scalacOptions, version}
 
+protected[projectsettings] trait ProjectsHelperKeys extends BasicSbtSettingsKeys {
 
-protected[plugins] trait BasicSbtSettings {
-  lazy val hexagonalPart = settingKey[HexagonalPart]("the hexagonal architecture part")
+  def internalProject(projectName: String, projectBaseOption: Option[File] = None): Project = {
+    ProjectSbtSettingsModel(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
+  }
+
+  def publishableProject(projectName: String, projectBaseOption: Option[File] = None): Project = {
+    ProjectSbtSettingsModel(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
+  }
 }
