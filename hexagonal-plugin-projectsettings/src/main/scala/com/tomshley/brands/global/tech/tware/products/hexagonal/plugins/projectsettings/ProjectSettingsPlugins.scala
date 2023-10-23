@@ -21,32 +21,40 @@ package projectsettings
 
 import sbt.{Def, *}
 
-/*
- * WARNING - TODO - Under Construction!
- */
-
-sealed trait ProjectSettingsPlugin extends AutoPlugin {
+sealed trait BaseProjectSettingsPlugin extends AutoPlugin {
 
   override val trigger: PluginTrigger = noTrigger
 
   override val requires: Plugins = plugins.JvmPlugin
 
-  object autoImport extends ProjectSettingsKeys
+  object autoImport extends CommonProjectSettingsKeys
 
   import autoImport.*
 
   override def projectSettings: Seq[Def.Setting[?]] = {
-    println("hit the base settings")
     super.projectSettings ++ baseSettings3
   }
 }
-object ProjectHelperPlugin extends ProjectSettingsPlugin {}
-object HexagonalLibProjectPlugin extends ProjectSettingsPlugin {
+object ProjectsHelperPlugin extends AutoPlugin{
+  override val trigger: PluginTrigger = noTrigger
+
+  override val requires: Plugins = plugins.JvmPlugin
+
+  object autoImport extends ProjectsHelperKeys
+
+  import autoImport.*
+}
+object HexagonalLibProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] = {
-    println("hit the specific settings (lib)")
     super.projectSettings ++ ProjectSettingsDefs.javaProject ++ ProjectSettingsDefs.jsonProject ++ ProjectSettingsDefs.akkaProject ++ ProjectSettingsDefs.libProject ++ ProjectSettingsDefs.scala3CrossVersions
   }
 }
-object HexagonalCoreProjectPlugin extends ProjectSettingsPlugin {}
-object HexagonalValueAddProjectPlugin extends ProjectSettingsPlugin {}
-object HexagonalEdgeProjectPlugin extends ProjectSettingsPlugin {}
+object HexagonalCoreProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+}
+object HexagonalValueAddProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+}
+object HexagonalEdgeProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+}

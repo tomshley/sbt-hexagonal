@@ -17,32 +17,20 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
-package projectsettings
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
 
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettingsKeys
 import sbt.*
 import sbt.Keys.{licenses, scalaVersion, scalacOptions, version}
 
-protected[projectsettings] trait ProjectSettingsKeys extends BasicSbtSettingsKeys {
-  lazy val baseSettings3: sbt.Def.SettingsDefinition = Seq(
-    licenses := {
-      val tagOrBranch =
-        if (version.value.endsWith("SNAPSHOT")) "main"
-        else "v" + version.value
-      Seq(
-        ("APACHE-2.0",
-         url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE"))
-      )
-    },
-    scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s",
-    scalaVersion := ProjectSettingsDefs.Scala3
-  )
+protected[projectsettings] trait ProjectsHelperKeys extends BasicSbtSettingsKeys {
+
   def internalProject(projectName: String, projectBaseOption: Option[File] = None): Project = {
-    ProjectSbtSettings(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
+    ProjectSbtSettingsModel(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
   }
 
   def publishableProject(projectName: String, projectBaseOption: Option[File] = None): Project = {
-    ProjectSbtSettings(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
+    ProjectSbtSettingsModel(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject
   }
 }
