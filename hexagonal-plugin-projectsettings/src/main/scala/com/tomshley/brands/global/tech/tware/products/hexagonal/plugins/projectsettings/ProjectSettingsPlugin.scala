@@ -19,33 +19,34 @@
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
 
-import sbt.Keys.*
 import sbt.{Def, *}
 
 /*
  * WARNING - TODO - Under Construction!
  */
 
-object ProjectSettingsPlugin extends AutoPlugin {
+sealed trait ProjectSettingsPlugin extends AutoPlugin {
 
   override val trigger: PluginTrigger = noTrigger
 
   override val requires: Plugins = plugins.JvmPlugin
 
-  object autoImport extends ProjectSettingsKeys
-  private lazy val baseSettings3: sbt.Def.SettingsDefinition = Seq(
-    licenses := {
-      val tagOrBranch =
-        if (version.value.endsWith("SNAPSHOT")) "main"
-        else "v" + version.value
-      Seq(
-        ("APACHE-2.0",
-         url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE"))
-      )
-    },
-    scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s",
-    scalaVersion := ProjectSettingsDefs.Scala3,
-  )
+  override def projectSettings: Seq[Def.Setting[?]] = {
+    println("hit the base settings")
+    super.projectSettings ++ baseSettings3
+  }
 
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ baseSettings3
+  import autoImport.*
+
+  object autoImport extends ProjectSettingsKeys
 }
+object ProjectHelperPlugin extends ProjectSettingsPlugin {}
+object HexagonalLibProjectPlugin extends ProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] = {
+    println("hit the specific settings (lib)")
+    super.projectSettings ++ ProjectSettingsDefs.javaProject ++ ProjectSettingsDefs.jsonProject ++ ProjectSettingsDefs.akkaProject ++ ProjectSettingsDefs.libProject ++ ProjectSettingsDefs.scala3CrossVersions
+  }
+}
+object HexagonalCoreProjectPlugin extends ProjectSettingsPlugin {}
+object HexagonalValueAddProjectPlugin extends ProjectSettingsPlugin {}
+object HexagonalEdgeProjectPlugin extends ProjectSettingsPlugin {}

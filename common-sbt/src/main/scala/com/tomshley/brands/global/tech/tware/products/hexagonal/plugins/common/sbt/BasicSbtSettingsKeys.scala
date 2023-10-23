@@ -22,7 +22,6 @@ package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import sbt.*
 
-
-protected[plugins] trait BasicSbtSettings {
+protected[plugins] trait BasicSbtSettingsKeys {
   lazy val hexagonalPart = settingKey[HexagonalPart]("the hexagonal architecture part")
 }

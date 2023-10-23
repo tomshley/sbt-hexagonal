@@ -19,20 +19,6 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model
 
-//enum HexagonalPart { // desugars to a sealed abstract class
-//  case Obj(fields: Map[String, JsValue])
-//  case Arr(elems: ArraySeq[JsValue])
-//}
-//enum Primitive extends JsValue {
-//  case Str(str: String)
-//  case Num(bigDecimal: BigDecimal)
-//  case JsNull
-//}
-//enum Bool(boolean: Boolean) extends Primitive {
-//  case True extends Bool(true),
-//  case False extends Bool(false)
-//}
-
 sealed trait HexagonalPart {}
 
 sealed trait HexagonalOuter extends HexagonalPart {}
@@ -42,6 +28,7 @@ sealed trait HexagonalInfra extends HexagonalPart {}
 sealed trait HexagonalLayer extends HexagonalPart {}
 
 case object Lib extends HexagonalOuter
+
 case object LoggingAdapter extends HexagonalOuter
 
 case object StreamingAdapter extends HexagonalInfra
@@ -55,3 +42,4 @@ case object Edge extends HexagonalLayer
 case object ValueAdd extends HexagonalLayer
 
 case object Core extends HexagonalLayer
+
