@@ -13,6 +13,8 @@ sealed trait ProjectSettingsVersions {
   lazy val apacheCommonsIOVersion = "20030203.000550"
   lazy val apacheCommonsDigester = "3.2"
   lazy val akkaVersion = "2.9.0-M2"
+  lazy val akkaHttpVersion = "10.6.0-M1"
+  lazy val scalaTestVersion = "3.2.15"
   lazy val json4sVersion = "4.1.0-M3"
   val Scala213: String = "2.13.12"
   val Scala212: String = "2.12.18"
@@ -27,6 +29,20 @@ protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVer
     libraryDependencies ++= Seq(
         "com.typesafe.akka" %% "akka-actor" % akkaVersion,
         "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test
+      )
+  )
+  lazy val akkaGRPCProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+        )
+  )
+  lazy val akkaHTTPProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+        "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+        "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+        "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+        "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
+        "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
+        "org.scalatest" %% "scalatest" % scalaTestVersion % Test
       )
   )
   lazy val jsonProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(

@@ -45,16 +45,28 @@ object ProjectsHelperPlugin extends AutoPlugin{
   import autoImport.*
 }
 object LibProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = {
-    super.projectSettings ++ ProjectSettingsDefs.javaProject ++ ProjectSettingsDefs.jsonProject ++ ProjectSettingsDefs.akkaProject ++ ProjectSettingsDefs.libProject ++ ProjectSettingsDefs.scala3CrossVersions
-  }
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+      ProjectSettingsDefs.javaProject ++
+      ProjectSettingsDefs.jsonProject ++
+      ProjectSettingsDefs.akkaProject ++
+      ProjectSettingsDefs.libProject ++
+      ProjectSettingsDefs.scala3CrossVersions
 }
 object CoreProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+      ProjectSettingsDefs.scala3CrossVersions
 }
 object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+      ProjectSettingsDefs.scala3CrossVersions
 }
 object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+      ProjectSettingsDefs.scala3CrossVersions ++
+      ProjectSettingsDefs.jsonProject ++
+      ProjectSettingsDefs.akkaHTTPProject
 }
