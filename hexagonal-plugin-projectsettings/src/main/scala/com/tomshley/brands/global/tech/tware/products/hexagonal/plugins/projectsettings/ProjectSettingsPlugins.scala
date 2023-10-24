@@ -44,17 +44,17 @@ object ProjectsHelperPlugin extends AutoPlugin{
 
   import autoImport.*
 }
-object HexagonalLibProjectPlugin extends BaseProjectSettingsPlugin {
+object LibProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] = {
     super.projectSettings ++ ProjectSettingsDefs.javaProject ++ ProjectSettingsDefs.jsonProject ++ ProjectSettingsDefs.akkaProject ++ ProjectSettingsDefs.libProject ++ ProjectSettingsDefs.scala3CrossVersions
   }
 }
-object HexagonalCoreProjectPlugin extends BaseProjectSettingsPlugin {
+object CoreProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
 }
-object HexagonalValueAddProjectPlugin extends BaseProjectSettingsPlugin {
+object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
 }
-object HexagonalEdgeProjectPlugin extends BaseProjectSettingsPlugin {
+object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
 }
