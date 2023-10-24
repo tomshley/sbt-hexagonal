@@ -40,7 +40,6 @@ object ProjectStructurePlugin extends AutoPlugin {
     val log = sLog.value
 
     log.info("Enforcing file structure for a hexagonal project...")
-    log.info(Seq("Hexagonal Part", hexagonalPart.value).mkString(":"))
 
     lazy val filesystemArtifacts: Unit = FilesystemArtifacts.apply(
       name.value,
