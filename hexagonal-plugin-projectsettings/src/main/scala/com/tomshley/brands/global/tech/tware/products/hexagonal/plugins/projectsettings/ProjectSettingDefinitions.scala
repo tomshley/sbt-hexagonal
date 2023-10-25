@@ -14,6 +14,8 @@ sealed trait ProjectSettingsVersions {
   lazy val apacheCommonsDigester = "3.2"
   lazy val akkaVersion = "2.9.0-M2"
   lazy val akkaHttpVersion = "10.6.0-M1"
+  lazy val ioGrpc = "1.59.0"
+  lazy val scalaPBVersion = "0.11.13"
   lazy val scalaTestVersion = "3.2.15"
   lazy val json4sVersion = "4.1.0-M3"
   val Scala213: String = "2.13.12"
@@ -25,6 +27,11 @@ sealed trait ProjectSettingsVersions {
 protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVersions {
   lazy val scala3CrossVersions: Seq[Def.Setting[Seq[String]]] = Seq(crossScalaVersions := ScalaVersions)
 
+  lazy val hexagonalProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" %% "hexagonal-lib" % "0.1.0-SNAPSHOT"
+      )
+  )
   lazy val akkaProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
         "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -33,7 +40,11 @@ protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVer
   )
   lazy val akkaGRPCProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
-        )
+        "io.grpc" % "grpc-netty" % ioGrpc,
+//       Note: the compiler plugin needs to be added to plugins.sbt "com.thesamet.scalapb" %% "compilerplugin" % scalaPBVersion,
+        "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalaPBVersion,
+        "com.typesafe.akka" %% "akka-protobuf-v3" % akkaVersion
+      )
   )
   lazy val akkaHTTPProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
