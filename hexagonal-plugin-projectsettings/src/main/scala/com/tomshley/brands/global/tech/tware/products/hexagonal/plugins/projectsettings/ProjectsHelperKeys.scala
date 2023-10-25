@@ -19,10 +19,8 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
 
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettingsKeys
 import sbt.*
-import sbt.Keys.{licenses, scalaVersion, scalacOptions, version}
 
 protected[projectsettings] trait ProjectsHelperKeys extends BasicSbtSettingsKeys {
 
