@@ -35,26 +35,45 @@ sealed trait BaseProjectSettingsPlugin extends AutoPlugin {
     super.projectSettings ++ baseSettings3
   }
 }
-object ProjectsHelperPlugin extends AutoPlugin{
+object ProjectsHelperPlugin extends AutoPlugin {
   override val trigger: PluginTrigger = noTrigger
 
   override val requires: Plugins = plugins.JvmPlugin
 
-  object autoImport extends ProjectsHelperKeys
+  object autoImport extends ProjectsHelperKeys with CommonProjectSettingsKeys
 
   import autoImport.*
-}
-object HexagonalLibProjectPlugin extends BaseProjectSettingsPlugin {
+
   override def projectSettings: Seq[Def.Setting[?]] = {
-    super.projectSettings ++ ProjectSettingsDefs.javaProject ++ ProjectSettingsDefs.jsonProject ++ ProjectSettingsDefs.akkaProject ++ ProjectSettingsDefs.libProject ++ ProjectSettingsDefs.scala3CrossVersions
+    super.projectSettings ++ baseSettings3
   }
 }
-object HexagonalCoreProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+object LibProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.javaProject ++
+    ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.akkaProject ++
+    ProjectSettingsDefs.akkaHTTPProject ++
+    ProjectSettingsDefs.akkaGRPCProject ++
+    ProjectSettingsDefs.libProject ++
+    ProjectSettingsDefs.scala3CrossVersions
 }
-object HexagonalValueAddProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+object CoreProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.scala3CrossVersions ++
+    ProjectSettingsDefs.akkaGRPCProject
 }
-object HexagonalEdgeProjectPlugin extends BaseProjectSettingsPlugin {
-  override def projectSettings: Seq[Def.Setting[?]] = super.projectSettings ++ ProjectSettingsDefs.scala3CrossVersions
+object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.scala3CrossVersions
+}
+object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.scala3CrossVersions ++
+    ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.akkaHTTPProject
 }
