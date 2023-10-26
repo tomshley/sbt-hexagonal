@@ -48,4 +48,9 @@ object Dependencies {
 
     )
   )
+  val templatePluginProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+
+    )
+  )
 }

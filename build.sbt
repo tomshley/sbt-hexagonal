@@ -9,6 +9,7 @@ lazy val libraryPluginProject = hexagonalScriptedPluginProject("library", Depend
 lazy val protobufsPluginProject = hexagonalScriptedPluginProject("protobufs", Dependencies.protobufsPluginProject, Scala3.settings)
 lazy val settingsPluginProject = hexagonalScriptedPluginProject("projectsettings", Dependencies.settingsPluginProject, Scala3.settings)
 lazy val structuredPluginProject = hexagonalScriptedPluginProject("projectstructure", Dependencies.structuredPluginProject, Scala3.settings)
+lazy val templatePluginProject = hexagonalScriptedPluginProject("projecttemplate", Dependencies.templatePluginProject, Scala3.settings)
 
 lazy val hexagonalPlugins = (project in file("."))
   .aggregate(
@@ -20,7 +21,8 @@ lazy val hexagonalPlugins = (project in file("."))
     libraryPluginProject,
     protobufsPluginProject,
     settingsPluginProject,
-    structuredPluginProject
+    structuredPluginProject,
+    templatePluginProject
   )
 def hexagonalProject(projectName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
   Project(id = projectName, base = file(projectName))
