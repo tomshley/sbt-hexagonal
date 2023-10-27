@@ -1,5 +1,5 @@
+import sbt.Keys.*
 import sbt.{Def, *}
-import Keys.*
 
 object Dependencies {
   val Scala213 = "2.13.12"
@@ -10,56 +10,41 @@ object Dependencies {
 
   val commonProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val acceptancePluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val cicdPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val layeredPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val libraryPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val protobufsPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val settingsPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val structuredPluginProject: Seq[Def.Setting[?]] = Seq(
     libraryDependencies ++= Seq(
-
-    )
+        )
   )
   val templatePluginProject: Seq[Def.Setting[?]] = Seq(
-    Compile / unmanagedResourceDirectories := {
-      Seq(baseDirectory.value / "src/main/resources")
-    },
-//    Compile / target := {
-//      baseDirectory.value / "sbt-stuff"
-//    },
-//    Compile / classDirectory := {
-//      baseDirectory.value / "target"
-//    },
-    libraryDependencies ++= Seq(
+    Test / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources",
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources",
 
-    )
+    libraryDependencies ++= Seq(
+        )
   )
 }
