@@ -12,6 +12,7 @@ lazy val structuredPluginProject = hexagonalScriptedPluginProject("projectstruct
 lazy val templatePluginProject = hexagonalScriptedPluginProject("projecttemplate", Dependencies.templatePluginProject, Scala3.settings)
 
 lazy val hexagonalPlugins = (project in file("."))
+  .enablePlugins(AssemblyPlugin)
   .aggregate(
     commonProject,
     commonSbtProject,
@@ -24,8 +25,12 @@ lazy val hexagonalPlugins = (project in file("."))
     structuredPluginProject,
     templatePluginProject
   )
+  .settings(
+    publish / skip := true
+  )
 def hexagonalProject(projectName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
   Project(id = projectName, base = file(projectName))
+    .enablePlugins(AssemblyPlugin)
     .settings(
       organization := "com.tomshley.brands.global.tech.tware.products.hexagonal.plugins",
       name := projectName,
