@@ -78,10 +78,8 @@ object ProjectTemplatePlugin extends AutoPlugin {
         Using(
           scala.io.Source.createBufferedSource(managedResource.openStream())
         ) { inputFile =>
-          println("TARGET PATH IN CURRENT BUILD: " + t.targetFile.toPath)
           Using(Files.newBufferedWriter(t.targetFile.toPath, Charset.forName("UTF-8"))) { outputFile =>
             for (line <- inputFile.getLines) {
-              println("LINE: " + line)
               outputFile.write(line + "\n")
             }
           }
