@@ -19,6 +19,7 @@
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projecttemplate
 
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.UnmanagedResource
 import sbt.Keys.{baseDirectory, sLog}
 import sbt.{Def, *}
 
@@ -44,26 +45,12 @@ object ProjectTemplatePlugin extends AutoPlugin {
     val log = sLog.value
 
     log.info("Enforcing file structure for a hexagonal project...")
-    case class TemplateSource(managedName: String,
-                              targetName: String,
-                              extension: String = ".tpl",
-                              targetDestination: File = baseDirectory.value) {
-      lazy val fileName: String = {
-        file(managedName).getName
-      }
 
-      lazy val targetFile: File = {
-        file(Seq(targetDestination, targetName).mkString("/"))
-      }
-
-      lazy val cleanManagedFileName: String = fileName.substring(0, fileName.length - extension.length)
-    }
-
-    lazy val gitignoreSource: TemplateSource = TemplateSource("templates/gitignore.tpl", ".gitignore")
-    lazy val jvmoptsSource: TemplateSource = TemplateSource("templates/jvmopts.tpl", ".jvmopts")
-    lazy val scalafmtSource: TemplateSource = TemplateSource("templates/scalafmt.tpl", ".scalafmt")
-    lazy val licenseSource: TemplateSource = TemplateSource("templates/license.tpl", "LICENSE")
-    lazy val versionSource: TemplateSource = TemplateSource("templates/version.tpl", "VERSION")
+    lazy val gitignoreSource: UnmanagedResource = UnmanagedResource("templates/gitignore.tpl", ".gitignore", baseDirectory.value)
+    lazy val jvmoptsSource: UnmanagedResource = UnmanagedResource("templates/jvmopts.tpl", ".jvmopts", baseDirectory.value)
+    lazy val scalafmtSource: UnmanagedResource = UnmanagedResource("templates/scalafmt.tpl", ".scalafmt", baseDirectory.value)
+    lazy val licenseSource: UnmanagedResource = UnmanagedResource("templates/license.tpl", "LICENSE", baseDirectory.value)
+    lazy val versionSource: UnmanagedResource = UnmanagedResource("templates/version.tpl", "VERSION", baseDirectory.value)
 
     lazy val allTemplates = Seq(gitignoreSource, jvmoptsSource, scalafmtSource, licenseSource, versionSource)
 
@@ -72,11 +59,9 @@ object ProjectTemplatePlugin extends AutoPlugin {
         s.targetFile.exists()
       }
       .foreach(t => {
-        val managedResource = getClass.getClassLoader.getResource(
-          t.managedName
-        )
+
         Using(
-          scala.io.Source.createBufferedSource(managedResource.openStream())
+          scala.io.Source.createBufferedSource(t.unmanagedResourceURL.openStream())
         ) { inputFile =>
           Using(Files.newBufferedWriter(t.targetFile.toPath, Charset.forName("UTF-8"))) { outputFile =>
             for (line <- inputFile.getLines) {
