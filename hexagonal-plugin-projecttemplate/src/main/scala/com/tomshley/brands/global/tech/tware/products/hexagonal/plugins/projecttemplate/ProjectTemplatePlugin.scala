@@ -24,7 +24,6 @@ import sbt.{Def, *}
 
 import java.nio.charset.Charset
 import java.nio.file.Files
-import scala.io.BufferedSource
 import scala.util.Using
 
 object ProjectTemplatePlugin extends AutoPlugin {
@@ -45,27 +44,26 @@ object ProjectTemplatePlugin extends AutoPlugin {
     val log = sLog.value
 
     log.info("Enforcing file structure for a hexagonal project...")
-    case class TemplateSource(name: String, extension: String = ".tpl", targetDestination: File = baseDirectory.value) {
-      def bufferedFromTemplateFile: BufferedSource = {
-        scala.io.Source.fromFile(name)
-      }
-
+    case class TemplateSource(managedName: String,
+                              targetName: String,
+                              extension: String = ".tpl",
+                              targetDestination: File = baseDirectory.value) {
       lazy val fileName: String = {
-        file(name).getName
+        file(managedName).getName
       }
 
       lazy val targetFile: File = {
-        file(Seq(targetDestination, cleanFileName).mkString("/"))
+        file(Seq(targetDestination, targetName).mkString("/"))
       }
 
-      lazy val cleanFileName: String = fileName.substring(0, fileName.length - extension.length)
+      lazy val cleanManagedFileName: String = fileName.substring(0, fileName.length - extension.length)
     }
 
-    lazy val gitignoreSource: TemplateSource = TemplateSource("src/main/resources/.gitignore.tpl")
-    lazy val jvmoptsSource: TemplateSource = TemplateSource("src/main/resources/.jvmopts.tpl")
-    lazy val scalafmtSource: TemplateSource = TemplateSource("src/main/resources/.scalafmt.tpl")
-    lazy val licenseSource: TemplateSource = TemplateSource("src/main/resources/LICENSE.tpl")
-    lazy val versionSource: TemplateSource = TemplateSource("src/main/resources/VERSION.tpl")
+    lazy val gitignoreSource: TemplateSource = TemplateSource("templates/gitignore.tpl", ".gitignore")
+    lazy val jvmoptsSource: TemplateSource = TemplateSource("templates/jvmopts.tpl", ".jvmopts")
+    lazy val scalafmtSource: TemplateSource = TemplateSource("templates/scalafmt.tpl", ".scalafmt")
+    lazy val licenseSource: TemplateSource = TemplateSource("templates/license.tpl", "LICENSE")
+    lazy val versionSource: TemplateSource = TemplateSource("templates/version.tpl", "VERSION")
 
     lazy val allTemplates = Seq(gitignoreSource, jvmoptsSource, scalafmtSource, licenseSource, versionSource)
 
@@ -73,9 +71,18 @@ object ProjectTemplatePlugin extends AutoPlugin {
       .filterNot { s =>
         s.targetFile.exists()
       }
-      .map(s => {
-        Using(Files.newBufferedWriter(s.targetFile.toPath, Charset.forName("UTF-8"))) { writer =>
-          s.bufferedFromTemplateFile.getLines().foreach(line => writer.write(line))
+      .foreach(t => {
+        val managedResource = getClass.getClassLoader.getResource(
+          t.managedName
+        )
+        Using(
+          scala.io.Source.createBufferedSource(managedResource.openStream())
+        ) { inputFile =>
+          Using(Files.newBufferedWriter(t.targetFile.toPath, Charset.forName("UTF-8"))) { outputFile =>
+            for (line <- inputFile.getLines) {
+              outputFile.write(line + "\n")
+            }
+          }
         }
       })
   }
