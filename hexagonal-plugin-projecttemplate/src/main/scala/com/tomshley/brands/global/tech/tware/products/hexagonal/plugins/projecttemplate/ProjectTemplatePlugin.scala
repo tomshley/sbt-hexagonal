@@ -19,9 +19,10 @@
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projecttemplate
 
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.ResourceTypes
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.UnmanagedResource
+import sbt.*
 import sbt.Keys.{baseDirectory, sLog}
-import sbt.{Def, *}
 
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -46,11 +47,11 @@ object ProjectTemplatePlugin extends AutoPlugin {
 
     log.info("Enforcing file structure for a hexagonal project...")
 
-    lazy val gitignoreSource: UnmanagedResource = UnmanagedResource("templates/gitignore.tpl", ".gitignore", baseDirectory.value)
-    lazy val jvmoptsSource: UnmanagedResource = UnmanagedResource("templates/jvmopts.tpl", ".jvmopts", baseDirectory.value)
-    lazy val scalafmtSource: UnmanagedResource = UnmanagedResource("templates/scalafmt.tpl", ".scalafmt", baseDirectory.value)
-    lazy val licenseSource: UnmanagedResource = UnmanagedResource("templates/license.tpl", "LICENSE", baseDirectory.value)
-    lazy val versionSource: UnmanagedResource = UnmanagedResource("templates/version.tpl", "VERSION", baseDirectory.value)
+    lazy val gitignoreSource: UnmanagedResource = UnmanagedResource("templates/gitignore.tpl", ".gitignore", baseDirectory.value, unmanagedResourceTypeOption=Some(ResourceTypes.Template))
+    lazy val jvmoptsSource: UnmanagedResource = UnmanagedResource("templates/jvmopts.tpl", ".jvmopts", baseDirectory.value, unmanagedResourceTypeOption=Some(ResourceTypes.Template))
+    lazy val scalafmtSource: UnmanagedResource = UnmanagedResource("templates/scalafmt.tpl", ".scalafmt", baseDirectory.value, unmanagedResourceTypeOption=Some(ResourceTypes.Template))
+    lazy val licenseSource: UnmanagedResource = UnmanagedResource("templates/license.tpl", "LICENSE", baseDirectory.value, unmanagedResourceTypeOption=Some(ResourceTypes.Template))
+    lazy val versionSource: UnmanagedResource = UnmanagedResource("templates/version.tpl", "VERSION", baseDirectory.value, unmanagedResourceTypeOption=Some(ResourceTypes.Template))
 
     lazy val allTemplates = Seq(gitignoreSource, jvmoptsSource, scalafmtSource, licenseSource, versionSource)
 
