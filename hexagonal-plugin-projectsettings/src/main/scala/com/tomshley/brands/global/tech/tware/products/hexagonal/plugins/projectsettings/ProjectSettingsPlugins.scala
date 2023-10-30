@@ -90,24 +90,29 @@ object LibProjectAkkaHttpPlugin extends BaseProjectSettingsPlugin {
 object LibUnmanagedProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
+    ProjectSettingsDefs.scala3CrossVersions ++
     ProjectSettingsDefs.unmanagedProject ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.hexagonalProject
 }
 object CoreProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.scala3CrossVersions ++
+    ProjectSettingsDefs.hexagonalProject ++
+    ProjectSettingsDefs.hexagonalAkkaGrpcProject ++
     ProjectSettingsDefs.akkaGRPCProject
 }
 object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.scala3CrossVersions ++
+    ProjectSettingsDefs.hexagonalProject
 }
 object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.hexagonalProject ++
+    ProjectSettingsDefs.hexagonalAkkaHttpProject ++
     ProjectSettingsDefs.akkaHTTPProject
 }

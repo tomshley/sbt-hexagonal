@@ -47,7 +47,17 @@ protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVer
 
   lazy val hexagonalProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
-        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" %% "hexagonal-lib" % "0.1.0-SNAPSHOT"
+        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib_3" % "0.1.0-SNAPSHOT"
+      )
+  )
+  lazy val hexagonalAkkaHttpProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib-runmainasfuture-http_3" % "0.1.0-SNAPSHOT"
+      )
+  )
+  lazy val hexagonalAkkaGrpcProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies ++= Seq(
+        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib-runmainasfuture-grpc_3" % "0.1.0-SNAPSHOT"
       )
   )
   lazy val akkaProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
