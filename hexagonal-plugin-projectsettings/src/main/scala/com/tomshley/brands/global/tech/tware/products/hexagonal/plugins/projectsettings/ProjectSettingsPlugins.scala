@@ -53,10 +53,44 @@ object LibProjectPlugin extends BaseProjectSettingsPlugin {
     super.projectSettings ++
     ProjectSettingsDefs.javaProject ++
     ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.libProject ++
+    ProjectSettingsDefs.scala3CrossVersions
+}
+object LibProjectAkkaPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.javaProject ++
+    ProjectSettingsDefs.jsonProject ++
     ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.akkaHTTPProject ++
+    ProjectSettingsDefs.libProject ++
+    ProjectSettingsDefs.scala3CrossVersions
+}
+object LibProjectAkkaGrpcPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.javaProject ++
+    ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.akkaProject ++
+    ProjectSettingsDefs.akkaProject ++
     ProjectSettingsDefs.akkaGRPCProject ++
     ProjectSettingsDefs.libProject ++
+    ProjectSettingsDefs.scala3CrossVersions
+}
+object LibProjectAkkaHttpPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.javaProject ++
+    ProjectSettingsDefs.jsonProject ++
+    ProjectSettingsDefs.akkaProject ++
+    ProjectSettingsDefs.akkaProject ++
+    ProjectSettingsDefs.akkaHTTPProject ++
+    ProjectSettingsDefs.libProject ++
+    ProjectSettingsDefs.scala3CrossVersions
+}
+object LibUnmanagedProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.unmanagedProject ++
     ProjectSettingsDefs.scala3CrossVersions
 }
 object CoreProjectPlugin extends BaseProjectSettingsPlugin {
