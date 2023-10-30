@@ -18,7 +18,7 @@
 
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
 
-import sbt.Keys.{crossScalaVersions, libraryDependencies}
+import sbt.Keys.{baseDirectory, crossScalaVersions, libraryDependencies, unmanagedResourceDirectories}
 import sbt.{Def, *}
 
 sealed trait ProjectSettingsVersions {
@@ -98,5 +98,9 @@ protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVer
         "com.github.nscala-time" %% "nscala-time" % "2.32.0",
         "com.typesafe" % "config" % "1.4.2"
       )
+  )
+  lazy val unmanagedProject: Seq[Def.Setting[?]] = Seq(
+    Test / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources",
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources"
   )
 }
