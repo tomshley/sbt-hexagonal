@@ -112,7 +112,11 @@ object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.hexagonalProject
+    ProjectSettingsDefs.hexagonalProject ++
+    ProjectSettingsDefs.hexagonalAkkaGrpcProject ++
+    ProjectSettingsDefs.akkaGRPCProject ++
+    ProjectSettingsDefs.hexagonalAkkaHttpProject ++
+    ProjectSettingsDefs.akkaHTTPProject
 }
 object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
