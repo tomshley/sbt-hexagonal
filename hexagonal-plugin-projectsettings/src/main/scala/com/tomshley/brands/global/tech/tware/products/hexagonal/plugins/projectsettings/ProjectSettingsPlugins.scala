@@ -87,6 +87,12 @@ object LibProjectAkkaHttpPlugin extends BaseProjectSettingsPlugin {
     ProjectSettingsDefs.libProject ++
     ProjectSettingsDefs.scala3CrossVersions
 }
+object LibManagedProjectPlugin extends BaseProjectSettingsPlugin {
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.scala3CrossVersions ++
+    ProjectSettingsDefs.hexagonalProject
+}
 object LibUnmanagedProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
