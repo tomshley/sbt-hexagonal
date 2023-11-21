@@ -21,7 +21,7 @@ package projectsettings
 
 import sbt.{Def, *}
 
-sealed trait BaseProjectSettingsPlugin extends AutoPlugin {
+protected[this] object BaseProjectSettingsPlugin extends AutoPlugin {
 
   override val trigger: PluginTrigger = noTrigger
 
@@ -38,17 +38,15 @@ sealed trait BaseProjectSettingsPlugin extends AutoPlugin {
 object ProjectsHelperPlugin extends AutoPlugin {
   override val trigger: PluginTrigger = noTrigger
 
-  override val requires: Plugins = plugins.JvmPlugin
+  override val requires: Plugins = BaseProjectSettingsPlugin
 
   object autoImport extends ProjectsHelperKeys with CommonProjectSettingsKeys
 
   import autoImport.*
+}
+object LibProjectPlugin extends AutoPlugin {
+  override val requires: Plugins = BaseProjectSettingsPlugin
 
-  override def projectSettings: Seq[Def.Setting[?]] = {
-    super.projectSettings ++ baseSettings3
-  }
-}
-object LibProjectPlugin extends BaseProjectSettingsPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.javaProject ++
@@ -56,73 +54,55 @@ object LibProjectPlugin extends BaseProjectSettingsPlugin {
     ProjectSettingsDefs.libProject ++
     ProjectSettingsDefs.scala3CrossVersions
 }
-object LibProjectAkkaPlugin extends BaseProjectSettingsPlugin {
+object LibProjectAkkaPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.javaProject ++
-    ProjectSettingsDefs.jsonProject ++
-    ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.libProject ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.akkaProject
 }
-object LibProjectAkkaGrpcPlugin extends BaseProjectSettingsPlugin {
+object LibProjectAkkaGrpcPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectAkkaPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.javaProject ++
-    ProjectSettingsDefs.jsonProject ++
-    ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.akkaGRPCProject ++
-    ProjectSettingsDefs.libProject ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.akkaGRPCProject
 }
-object LibProjectAkkaHttpPlugin extends BaseProjectSettingsPlugin {
+object LibProjectAkkaHttpPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectAkkaPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.javaProject ++
-    ProjectSettingsDefs.jsonProject ++
-    ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.akkaProject ++
-    ProjectSettingsDefs.akkaHTTPProject ++
-    ProjectSettingsDefs.libProject ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.akkaHTTPProject
 }
-object LibManagedProjectPlugin extends BaseProjectSettingsPlugin {
+object LibManagedProjectPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.scala3CrossVersions ++
     ProjectSettingsDefs.hexagonalProject
 }
-object LibUnmanagedProjectPlugin extends BaseProjectSettingsPlugin {
+object LibUnmanagedProjectPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
     ProjectSettingsDefs.scala3CrossVersions ++
     ProjectSettingsDefs.unmanagedProject ++
     ProjectSettingsDefs.hexagonalProject
 }
-object CoreProjectPlugin extends BaseProjectSettingsPlugin {
+
+object CoreProjectPlugin extends AutoPlugin {
+
+  override val requires: Plugins = LibProjectAkkaGrpcPlugin && LibManagedProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.hexagonalProject ++
-    ProjectSettingsDefs.hexagonalAkkaGrpcProject ++
-    ProjectSettingsDefs.akkaGRPCProject
+    ProjectSettingsDefs.hexagonalAkkaGrpcProject
 }
-object ValueAddProjectPlugin extends BaseProjectSettingsPlugin {
+object ValueAddProjectPlugin extends AutoPlugin {
+
+  override val requires: Plugins = LibProjectAkkaHttpPlugin && LibProjectAkkaGrpcPlugin && LibManagedProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
-    super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.hexagonalProject ++
     ProjectSettingsDefs.hexagonalAkkaGrpcProject ++
-    ProjectSettingsDefs.akkaGRPCProject ++
-    ProjectSettingsDefs.hexagonalAkkaHttpProject ++
-    ProjectSettingsDefs.akkaHTTPProject
+    ProjectSettingsDefs.hexagonalAkkaHttpProject
 }
-object EdgeProjectPlugin extends BaseProjectSettingsPlugin {
+object EdgeProjectPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectAkkaHttpPlugin && LibManagedProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.hexagonalProject ++
-    ProjectSettingsDefs.hexagonalAkkaHttpProject ++
-    ProjectSettingsDefs.akkaHTTPProject
+    ProjectSettingsDefs.hexagonalAkkaHttpProject
 }
