@@ -16,10 +16,13 @@
  * @author Thomas Schena @sgoggles <https://github.com/sgoggles> | <https://gitlab.com/sgoggles>
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.settings
 
-import sbt.Keys.{baseDirectory, crossScalaVersions, libraryDependencies, unmanagedResourceDirectories}
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.vendor.{AkkaProjectSettings, PekkoProjectSettings}
+import com.typesafe.sbt.packager.Keys.{dockerBaseImage, dockerRepository, dockerUpdateLatest, dockerUsername}
 import sbt.{Def, *}
+import sbt.Keys.*
+
 
 sealed trait ProjectSettingsVersions {
   lazy val jetbrainsAnnotationsVersion = "24.0.1"
@@ -30,66 +33,73 @@ sealed trait ProjectSettingsVersions {
   lazy val slf4jVersion = "2.0.5"
   lazy val apacheCommonsIOVersion = "20030203.000550"
   lazy val apacheCommonsDigester = "3.2"
-  lazy val akkaVersion = "2.9.0-M2"
-  lazy val akkaHttpVersion = "10.6.0-M1"
-  lazy val ioGrpc = "1.59.0"
-  lazy val scalaPBVersion = "0.11.13"
   lazy val scalaTestVersion = "3.2.15"
   lazy val json4sVersion = "4.1.0-M3"
-  val Scala213: String = "2.13.12"
   val Scala212: String = "2.12.18"
-  val Scala3: String = "3.3.1"
-  val Scala2Versions: Seq[String] = Seq(Scala213, Scala212)
+  val Scala3 = "3.4.2"
+  val Scala213 = "2.13.14"
+  val Scala2Versions: Seq[String] = Seq(Scala213)
   val ScalaVersions: Seq[String] = Scala2Versions :+ Scala3
 }
 protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVersions {
-  lazy val scala3CrossVersions: Seq[Def.Setting[Seq[String]]] = Seq(crossScalaVersions := ScalaVersions)
+  lazy val dockerPublishProject: Seq[Def.Setting[? >: String & Option[String] & Boolean]] = Seq(
+    dockerBaseImage := "docker.io/library/eclipse-temurin:17.0.3_7-jre-jammy",
+    dockerUsername := sys.props.get("docker.username"),
+    dockerRepository := sys.props.get("docker.registry"),
+    dockerUpdateLatest := true
+  )
+
+  lazy val scala213Settings: Seq[Def.Setting[? >: Seq[String] & String <: Object]] = Seq(
+    crossScalaVersions := Scala2Versions,
+    scalaVersion := Scala213
+  )
+
+  lazy val scala3Settings: Seq[Def.Setting[? >: Seq[String] & String <: Object]] = Seq(
+    crossScalaVersions := ScalaVersions,
+    scalaVersion := Scala3
+  )
 
   lazy val hexagonalProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
-        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib_3" % "0.1.0-SNAPSHOT"
+/* UNDER CONSTRUCTION */
+//        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib_3" % "0.1.0-SNAPSHOT"
       )
   )
-  lazy val hexagonalAkkaHttpProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies ++= Seq(
-        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib-runmainasfuture-http_3" % "0.1.0-SNAPSHOT"
-      )
-  )
-  lazy val hexagonalAkkaGrpcProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies ++= Seq(
-        "com.tomshley.brands.global.tech.tware.products.hexagonal.lib" % "hexagonal-lib-runmainasfuture-grpc_3" % "0.1.0-SNAPSHOT"
-      )
-  )
+
   lazy val akkaProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-        "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test
-      )
+    libraryDependencies ++= AkkaProjectSettings.Libraries.akkaActorProjectSettings
   )
   lazy val akkaGRPCProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies ++= Seq(
-        "io.grpc" % "grpc-netty" % ioGrpc,
-//       Note: the compiler plugin needs to be added to plugins.sbt "com.thesamet.scalapb" %% "compilerplugin" % scalaPBVersion,
-        "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalaPBVersion,
-        "com.typesafe.akka" %% "akka-protobuf-v3" % akkaVersion
-      )
+    libraryDependencies ++= AkkaProjectSettings.Libraries.akkaActorProjectSettings
   )
   lazy val akkaHTTPProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
-        "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-        "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
-        "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
-        "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-        "org.scalatest" %% "scalatest" % scalaTestVersion % Test
-      )
+    libraryDependencies ++= AkkaProjectSettings.Libraries.akkaActorProjectSettings
   )
+
+  lazy val pekkoProject: Seq[Def.Setting[? >: Seq[Resolver] & Seq[ModuleID] <: Seq[Serializable]]] = Seq(
+    resolvers ++= PekkoProjectSettings.Resolvers.pekkoResolvers,
+    libraryDependencies ++= PekkoProjectSettings.Libraries.pekkoActorLibraries
+  )
+  lazy val pekkoPersistenceProject: Seq[Def.Setting[? >: Seq[Resolver] & Seq[ModuleID] <: Seq[Serializable]]] = Seq(
+    resolvers ++= PekkoProjectSettings.Resolvers.pekkoResolvers,
+    libraryDependencies ++= PekkoProjectSettings.Libraries.pekkoPersistenceLibraries
+  )
+  lazy val pekkoProjectionProject: Seq[Def.Setting[? >: Seq[Resolver] & Seq[ModuleID] <: Seq[Serializable]]] = Seq(
+    resolvers ++= PekkoProjectSettings.Resolvers.pekkoResolvers,
+    libraryDependencies ++= PekkoProjectSettings.Libraries.pekkoProjectionLibraries
+  )
+  lazy val pekkoKafkaProject: Seq[Def.Setting[? >: Seq[Resolver] & Seq[ModuleID] <: Seq[Serializable]]] = Seq(
+    resolvers ++= PekkoProjectSettings.Resolvers.pekkoResolvers ++ PekkoProjectSettings.Resolvers.pekkoKafkaResolvers,
+    libraryDependencies ++= PekkoProjectSettings.Libraries.pekkoKafkaLibraries
+  )
+
   lazy val jsonProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
         "org.json4s" %% "json4s-native" % json4sVersion,
         "org.json4s" %% "json4s-jackson" % json4sVersion
       )
   )
+
   lazy val javaProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
         "org.apache.commons" % "commons-digester3" % apacheCommonsDigester,
@@ -106,7 +116,8 @@ protected[projectsettings] object ProjectSettingsDefs extends ProjectSettingsVer
   lazy val libProject: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
     libraryDependencies ++= Seq(
         "com.github.nscala-time" %% "nscala-time" % "2.32.0",
-        "com.typesafe" % "config" % "1.4.2"
+        "com.typesafe" % "config" % "1.4.2",
+        "org.scalatest" %% "scalatest" % scalaTestVersion % Test
       )
   )
   lazy val unmanagedProject: Seq[Def.Setting[?]] = Seq(

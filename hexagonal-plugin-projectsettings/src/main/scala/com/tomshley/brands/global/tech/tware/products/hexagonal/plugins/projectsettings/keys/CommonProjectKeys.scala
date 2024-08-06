@@ -17,13 +17,14 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.keys
 
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettingsKeys
-import sbt.Keys.{licenses, scalaVersion, scalacOptions, version}
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.settings.ProjectSettingsDefs
+import sbt.Keys.{licenses, scalacOptions, version}
 import sbt.url
 
-protected[projectsettings] trait CommonProjectSettingsKeys extends BasicSbtSettingsKeys {
+protected[projectsettings] trait CommonProjectKeys extends BasicSbtSettingsKeys {
   lazy val baseSettings3: sbt.Def.SettingsDefinition = Seq(
     licenses := {
       val tagOrBranch =
@@ -34,7 +35,6 @@ protected[projectsettings] trait CommonProjectSettingsKeys extends BasicSbtSetti
           url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE"))
       )
     },
-    scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s",
-    scalaVersion := ProjectSettingsDefs.Scala3
-  )
+    scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s"
+  ) ++ ProjectSettingsDefs.scala3Settings
 }

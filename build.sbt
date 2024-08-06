@@ -1,15 +1,38 @@
-import sbt.file
+import sbt.{addDependencyTreePlugin, addSbtPlugin, file}
 
 lazy val commonProject = hexagonalProject("common", Dependencies.commonProject, Scala3.settings)
 lazy val commonSbtProject = hexagonalSbtProject("common-sbt", Dependencies.commonProject, Scala3.settings)
-lazy val acceptancePluginProject = hexagonalScriptedPluginProject("acceptance", Dependencies.acceptancePluginProject, Scala3.settings)
-lazy val cicdPluginProject = hexagonalScriptedPluginProject("cicd", Dependencies.acceptancePluginProject, Scala3.settings)
-lazy val layeredPluginProject = hexagonalScriptedPluginProject("layered", Dependencies.layeredPluginProject, Scala3.settings)
-lazy val libraryPluginProject = hexagonalScriptedPluginProject("library", Dependencies.libraryPluginProject, Scala3.settings)
-lazy val protobufsPluginProject = hexagonalScriptedPluginProject("protobufs", Dependencies.protobufsPluginProject, Scala3.settings)
-lazy val settingsPluginProject = hexagonalScriptedPluginProject("projectsettings", Dependencies.settingsPluginProject, Scala3.settings)
-lazy val structuredPluginProject = hexagonalScriptedPluginProject("projectstructure", Dependencies.structuredPluginProject, Scala3.settings)
-lazy val templatePluginProject = hexagonalScriptedPluginProject("projecttemplate", Dependencies.templatePluginProject, Scala3.settings)
+lazy val acceptancePluginProject =
+  hexagonalScriptedPluginProject("acceptance", Dependencies.acceptancePluginProject, Scala3.settings)
+lazy val cicdPluginProject =
+  hexagonalScriptedPluginProject("cicd", Dependencies.acceptancePluginProject, Scala3.settings)
+lazy val layeredPluginProject =
+  hexagonalScriptedPluginProject("layered", Dependencies.layeredPluginProject, Scala3.settings)
+lazy val libraryPluginProject =
+  hexagonalScriptedPluginProject("library", Dependencies.libraryPluginProject, Scala3.settings)
+lazy val protobufsPluginProject =
+  hexagonalScriptedPluginProject("protobufs", Dependencies.protobufsPluginProject, Scala3.settings)
+lazy val settingsPluginProject =
+  hexagonalScriptedPluginProject(
+    "projectsettings",
+    Dependencies.settingsPluginProject,
+    Scala3.settings,
+    Seq(
+      addSbtPlugin("org.apache.pekko" % "pekko-grpc-sbt-plugin" % "1.1.0-M1"),
+      addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2"),
+      addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.13"),
+      addSbtPlugin("com.dwijnand" % "sbt-dynver" % "4.1.1"),
+      addSbtPlugin("org.playframework.twirl" % "sbt-twirl" % "2.0.1"),
+      addDependencyTreePlugin
+    )
+  )
+lazy val structuredPluginProject = hexagonalScriptedPluginProject(
+  "projectstructure",
+  Dependencies.structuredPluginProject,
+  Scala3.settings
+)
+lazy val templatePluginProject =
+  hexagonalScriptedPluginProject("projecttemplate", Dependencies.templatePluginProject, Scala3.settings)
 
 lazy val hexagonalPlugins = (project in file("."))
   .enablePlugins(AssemblyPlugin)
@@ -38,7 +61,10 @@ def hexagonalProject(projectName: String, additionalSettings: sbt.Def.SettingsDe
         val tagOrBranch =
           if (version.value.endsWith("SNAPSHOT")) "main"
           else "v" + version.value
-        Seq(("APACHE-2.0", url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE")))
+        Seq(
+          ("APACHE-2.0",
+           url("https://raw.githubusercontent.com/tomshley/hexagonal-plugins-sbt/" + tagOrBranch + "/LICENSE"))
+        )
       },
       scalacOptions += "-Wconf:cat=deprecation&msg=.*JavaConverters.*:s"
     )
@@ -51,7 +77,8 @@ def hexagonalSbtProject(projectName: String, additionalSettings: sbt.Def.Setting
     )
     .dependsOn(commonProject)
 }
-def hexagonalScriptedPluginProject(pluginProjectName: String, additionalSettings: sbt.Def.SettingsDefinition*): Project = {
+def hexagonalScriptedPluginProject(pluginProjectName: String,
+                                   additionalSettings: sbt.Def.SettingsDefinition*): Project = {
   val hexagonalProjectName = "hexagonal-plugin-" + pluginProjectName
   hexagonalSbtProject(hexagonalProjectName, additionalSettings *)
     .settings(
