@@ -17,14 +17,13 @@
  *
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.keys
 
-import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.model.HexagonalPart
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.BasicSbtSettingsKeys
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.models.ProjectSbtSettingsModel
 import sbt.*
-import sbt.Keys.{licenses, scalaVersion, scalacOptions, version}
 
-protected[projectsettings] trait ProjectsHelperKeys extends BasicSbtSettingsKeys {
+protected[projectsettings] trait ProjectTypeKeys extends BasicSbtSettingsKeys {
 
   def internalProject(projectName: String, projectBaseOption: Option[File] = None): Project = {
     ProjectSbtSettingsModel(projectName = projectName, projectBaseOption = projectBaseOption).sbtProject

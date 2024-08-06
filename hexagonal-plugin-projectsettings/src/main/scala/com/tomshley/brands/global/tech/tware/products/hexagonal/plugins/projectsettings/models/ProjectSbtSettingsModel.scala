@@ -16,9 +16,9 @@
  * @author Thomas Schena @sgoggles <https://github.com/sgoggles> | <https://gitlab.com/sgoggles>
  */
 
-package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings
+package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.models
 
 import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.common.sbt.SbtProjectHelper
 import sbt.File
 
-case class ProjectSbtSettingsModel(projectName: String, projectBaseOption: Option[File] = None) extends SbtProjectHelper
+protected[projectsettings] case class ProjectSbtSettingsModel(projectName: String, projectBaseOption: Option[File] = None) extends SbtProjectHelper
