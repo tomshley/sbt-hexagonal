@@ -19,6 +19,12 @@
 package com.tomshley.brands.global.tech.tware.products.hexagonal.plugins
 package projectsettings
 
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.keys.{CommonProjectKeys, ProjectTypeKeys}
+import com.tomshley.brands.global.tech.tware.products.hexagonal.plugins.projectsettings.settings.ProjectSettingsDefs
+import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
+import com.typesafe.sbt.packager.docker.DockerPlugin
+import org.apache.pekko.grpc.sbt.PekkoGrpcPlugin
+import play.twirl.sbt.SbtTwirl
 import sbt.{Def, *}
 
 protected[this] object BaseProjectSettingsPlugin extends AutoPlugin {
@@ -27,7 +33,7 @@ protected[this] object BaseProjectSettingsPlugin extends AutoPlugin {
 
   override val requires: Plugins = plugins.JvmPlugin
 
-  object autoImport extends CommonProjectSettingsKeys
+  object autoImport extends CommonProjectKeys
 
   import autoImport.*
 
@@ -40,9 +46,7 @@ object ProjectsHelperPlugin extends AutoPlugin {
 
   override val requires: Plugins = BaseProjectSettingsPlugin
 
-  object autoImport extends ProjectsHelperKeys with CommonProjectSettingsKeys
-
-  import autoImport.*
+  object autoImport extends ProjectTypeKeys with CommonProjectKeys
 }
 object LibProjectPlugin extends AutoPlugin {
   override val requires: Plugins = BaseProjectSettingsPlugin
@@ -51,58 +55,95 @@ object LibProjectPlugin extends AutoPlugin {
     super.projectSettings ++
     ProjectSettingsDefs.javaProject ++
     ProjectSettingsDefs.jsonProject ++
-    ProjectSettingsDefs.libProject ++
-    ProjectSettingsDefs.scala3CrossVersions
+    ProjectSettingsDefs.libProject
 }
-object LibProjectAkkaPlugin extends AutoPlugin {
+object ProtoOnlyPekkoProjectPlugin extends AutoPlugin {
+  override val requires: Plugins = PekkoGrpcPlugin
+
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++ ProjectSettingsDefs.scala3Settings
+}
+object LibProjectPekkoPlugin extends AutoPlugin {
   override val requires: Plugins = LibProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.akkaProject
+    ProjectSettingsDefs.pekkoProject
 }
-object LibProjectAkkaGrpcPlugin extends AutoPlugin {
-  override val requires: Plugins = LibProjectAkkaPlugin
+object LibProjectPekkoPersistencePlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.akkaGRPCProject
+    ProjectSettingsDefs.pekkoProject ++
+    ProjectSettingsDefs.pekkoPersistenceProject
 }
-object LibProjectAkkaHttpPlugin extends AutoPlugin {
-  override val requires: Plugins = LibProjectAkkaPlugin
+object LibProjectPekkoProjectionPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.akkaHTTPProject
+    ProjectSettingsDefs.pekkoProject ++
+    ProjectSettingsDefs.pekkoProjectionProject
 }
+object LibProjectPekkoKafkaPlugin extends AutoPlugin {
+  override val requires: Plugins = LibProjectPlugin
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.pekkoKafkaProject
+}
+
 object LibManagedProjectPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
-    super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.hexagonalProject
+    super.projectSettings
 }
+
 object LibUnmanagedProjectPlugin extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[?]] =
     super.projectSettings ++
-    ProjectSettingsDefs.scala3CrossVersions ++
-    ProjectSettingsDefs.unmanagedProject ++
-    ProjectSettingsDefs.hexagonalProject
+    ProjectSettingsDefs.unmanagedProject
+}
+
+object DockerPublishPlugin extends AutoPlugin {
+  override def requires = JavaAppPackaging && 
+    DockerPlugin
+  override def projectSettings: Seq[Def.Setting[?]] =
+    super.projectSettings ++
+    ProjectSettingsDefs.dockerPublishProject
 }
 
 object CoreProjectPlugin extends AutoPlugin {
 
-  override val requires: Plugins = LibProjectAkkaGrpcPlugin && LibManagedProjectPlugin
+  override val requires: Plugins = DockerPublishPlugin && 
+    PekkoGrpcPlugin && 
+    LibProjectPekkoPlugin && 
+    LibManagedProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
-    super.projectSettings ++
-    ProjectSettingsDefs.hexagonalAkkaGrpcProject
+    super.projectSettings
+//    ProjectSettingsDefs.hexagonalAkkaGrpcProject
 }
 object ValueAddProjectPlugin extends AutoPlugin {
 
-  override val requires: Plugins = LibProjectAkkaHttpPlugin && LibProjectAkkaGrpcPlugin && LibManagedProjectPlugin
+  override val requires
+  : Plugins = DockerPublishPlugin && 
+    PekkoGrpcPlugin && 
+    LibProjectPekkoPlugin && 
+    LibProjectPekkoPersistencePlugin && 
+    LibProjectPekkoProjectionPlugin && 
+    LibProjectPekkoKafkaPlugin && 
+    LibManagedProjectPlugin
+
   override def projectSettings: Seq[Def.Setting[?]] =
-    ProjectSettingsDefs.hexagonalAkkaGrpcProject ++
-    ProjectSettingsDefs.hexagonalAkkaHttpProject
+    super.projectSettings
 }
+
 object EdgeProjectPlugin extends AutoPlugin {
-  override val requires: Plugins = LibProjectAkkaHttpPlugin && LibManagedProjectPlugin
+  override val requires: Plugins = DockerPublishPlugin &&
+    DockerPublishPlugin &&
+    SbtTwirl &&
+    PekkoGrpcPlugin &&
+    LibProjectPekkoPlugin &&
+    LibProjectPekkoPersistencePlugin &&
+    LibProjectPekkoProjectionPlugin &&
+    LibProjectPekkoKafkaPlugin &&
+    LibManagedProjectPlugin
   override def projectSettings: Seq[Def.Setting[?]] =
-    super.projectSettings ++
-    ProjectSettingsDefs.hexagonalAkkaHttpProject
+    super.projectSettings
 }
